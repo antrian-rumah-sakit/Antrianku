@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tampilan Antrian Rumah Sakit</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f8ff;
+        margin: 0;
+    }
+    .container {
+        width: 90%;
+        max-width: 1200px;
+        background: #e6f7ff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        position: relative;
+    }
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #007acc;
+    }
+    .hospital-name {
+        font-size: 28px;
+        font-weight: bold;
+        color: #007acc;
+    }
+    .header-logo img {
+        width: 80px;
+        height: auto;
+    }
+    .time-date {
+        text-align: right;
+    }
+    .time-date .time {
+        font-size: 28px;
+        font-weight: bold;
+    }
+    .time-date .date {
+        font-size: 18px;
+        color: #555;
+    }
+    .main {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+    }
+    .doctor-info {
+        width: 40%;
+        padding: 20px;
+        background: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .doctor-info .department {
+        font-size: 22px;
+        font-weight: bold;
+        color: #007acc;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+    }
+    .doctor-info .doctor {
+        font-size: 18px;
+        margin-bottom: 20px;
+        color: #333;
+    }
+    .doctor-info .queue {
+        display: flex;
+        align-items: center;
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+    .queue-number {
+        font-size: 48px;
+        font-weight: bold;
+        margin-right: 15px;
+        color: #007acc;
+    }
+    .status {
+        padding: 5px 15px;
+        background: #ffcc00;
+        border-radius: 8px;
+        font-weight: bold;
+        color: #333;
+    }
+    .queue-list {
+        width: 35%;
+    }
+    .queue-list .item {
+        padding: 10px;
+        background: #ffffff;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .queue-list .item .number {
+        font-size: 20px;
+        font-weight: bold;
+        color: #007acc;
+    }
+    .queue-list .item .status-waiting {
+        padding: 5px 10px;
+        background: #ff6666;
+        border-radius: 5px;
+        color: #fff;
+        font-weight: bold;
+    }
+    .video-section {
+        width: 50%;
+        background: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+    .video-section img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+    }
+    .running-text {
+        position: absolute;
+        bottom: 10px;
+        width: 100%;
+        background: #007acc;
+        color: white;
+        padding: 10px 0;
+        text-align: center;
+        font-size: 16px;
+        font-weight: bold;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    .running-text span {
+        display: inline-block;
+        animation: marquee 20s linear infinite;
+    }
+    @keyframes marquee {
+        from { transform: translateX(100%); }
+        to { transform: translateX(-100%); }
+    }
+</style>
+<script>
+    function updateTime() {
+        const now = new Date();
+        document.getElementById("time").innerText = now.toLocaleTimeString();
+        document.getElementById("date").innerText = now.toLocaleDateString('id-ID');
+    }
+
+    function updateQueueDisplay() {
+        const serving = localStorage.getItem("serving") || "F-0001";
+        const next1 = localStorage.getItem("next1") || "F-0002";
+        const next2 = localStorage.getItem("next2") || "F-0003";
+        const next3 = localStorage.getItem("next3") || "F-0004";
+        
+        document.getElementById("serving-number").innerText = serving;
+        document.getElementById("next1").innerText = next1;
+        document.getElementById("next2").innerText = next2;
+        document.getElementById("next3").innerText = next3;
+    }
+
+    setInterval(updateTime, 1000);
+    setInterval(updateQueueDisplay, 1000);
+
+    document.addEventListener("DOMContentLoaded", function() {
+        updateTime();
+        updateQueueDisplay();
+    });
+</script>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <div class="header-logo">
+            <img src="RSUD BATAN DUREN.png" alt="Logo Rumah Sakit"> <!-- Pastikan jalur file logo benar -->
+        </div>
+        <div class="hospital-name">RSUD BATAN DUREN SAKTI</div>
+        <div class="time-date">
+            <div class="time" id="time"></div>
+            <div class="date" id="date"></div>
+        </div>
+    </div>
+    <div class="main">
+        <div class="doctor-info">
+            <div class="department">POLI ANAK</div>
+            <div class="doctor">dr. Wowo, Sp.A</div>
+            <div class="queue">
+                <div class="queue-number" id="serving-number">F-0001</div>
+                <div class="status">SEDANG DILAYANI</div>
+            </div>
+            <div class="room">Ruangan: POLI ANAK</div>
+        </div>
+        <div class="queue-list">
+            <div class="item">
+                <div class="number" id="next1">F-0002</div>
+                <div class="status-waiting">MENUNGGU</div>
+            </div>
+            <div class="item">
+                <div class="number" id="next2">F-0003</div>
+                <div class="status-waiting">MENUNGGU</div>
+            </div>
+            <div class="item">
+                <div class="number" id="next3">F-0004</div>
+                <div class="status-waiting">MENUNGGU</div>
+            </div>
+        </div>
+        <div class="video-section">
+            <img src="https://purimedika.com/wp-content/uploads/2020/11/Dr-Lestari-Raharjo.jpg" alt="Foto Dokter">
+        </div>
+    </div>
+    <div class="running-text">
+        <span>Selamat datang di RSUD BATAN DUREN SAKTI. Tetap jaga kesehatan dan rajin mencuci tangan. Antrian berikutnya akan segera dilayani...</span>
+    </div>
+</div>
+
+</body>
+</html>
